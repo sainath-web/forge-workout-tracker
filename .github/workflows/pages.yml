@@ -28,7 +28,7 @@ jobs:
       - name: Prepare frontend artifact
         run: |
           mkdir -p site
-          cp index.html app.js style.css manifest.webmanifest service-worker.js icon.svg site/
+          cp index.html app.js cloud.js style.css manifest.webmanifest service-worker.js icon.svg site/
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:

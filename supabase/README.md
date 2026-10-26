@@ -1,6 +1,6 @@
 # Supabase backend setup
 
-This folder holds Forge's database schema as a versioned Supabase migration. It is safe to commit; it contains no project URL, API key, service-role key, OAuth secret, or user data.
+This folder holds Forge's database schema as versioned Supabase migrations. The active project is `bfwuuxamiuapfuxzfieu` in `ap-south-1`. The client uses only the public publishable key in `cloud.js`; never put a service-role key or OAuth secret in browser code or the repository.
 
 ## Current schema
 
@@ -9,14 +9,13 @@ This folder holds Forge's database schema as a versioned Supabase migration. It 
 - Per-user routines and workout history with exercise sets.
 - Exercise comments and one like/dislike reaction per user and exercise.
 - Row-level security on every exposed table. A user can only access their own profile edits, routines, workouts, and sets. Public exercise data, approved exercise videos, visible comments, and aggregate reaction counts are readable without exposing the reaction voter list.
+- The current frontend supports email/password auth and syncing routines and completed workout logs. Exercise video browsing, comments, reactions, and social provider configuration are still future app work.
 
-## Apply to a hosted project
+## Current app setup
 
-1. Create a Supabase project in your account and choose a region close to your users.
-2. In the project settings, configure Auth providers and the callback/redirect URLs for the deployed site and mobile app. Do not send provider secrets in chat or commit them.
-3. Install the Supabase CLI and link this project from your own terminal with `supabase link`.
-4. Review the migration, then apply it with `supabase db push`.
-5. Add only the project URL and public anon/publishable key to the client configuration. Keep the service-role key server-side and out of the web app.
+The schema and function-grant migrations are already applied to the hosted project. The Pages workflow publishes `cloud.js` alongside the PWA files. Email sign-up may require a confirmation link.
 
-The migration is not applied to a live database yet. Once a Supabase project exists, apply it first to a development project and verify the access policies before connecting the app.
+In Supabase **Authentication → URL Configuration**, set the Site URL to `https://sainath-web.github.io/forge-workout-tracker/` and include that URL in the redirect allow list. For local development, also allow your localhost origin. Google and Apple sign-in buttons require their OAuth client credentials entered in **Authentication → Providers**. Keep provider secrets in Supabase settings; do not paste them into this repository or chat.
+
+When changing the schema, create a new migration with the Supabase CLI and apply it to a development project before production. The existing hosted migrations were applied through the connected Supabase integration; their remote version identifiers are reflected in the filenames in `migrations/`.
 

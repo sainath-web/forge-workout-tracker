@@ -19,6 +19,17 @@ window.ForgeCloud = (() => {
     return exerciseIds;
   }
 
+  async function loadExerciseVideos() {
+    const result = await client.from('exercises')
+      .select('name,exercise_videos(id,kind,title,playback_url,poster_url,duration_seconds)')
+      .eq('is_published', true)
+      .order('sort_order', { referencedTable: 'exercise_videos', ascending: true });
+    return fail(result).map(exercise => ({
+      ...exercise,
+      exercise_videos: (exercise.exercise_videos || []).filter(video => video.playback_url)
+    }));
+  }
+
   async function load() {
     const [routineResult, workoutResult] = await Promise.all([
       client.from('routines').select('id,name,description,routine_exercises(position,exercise:exercises(name))').order('created_at'),
@@ -103,6 +114,5 @@ window.ForgeCloud = (() => {
     return client.auth.signInWithOAuth({ provider, options: { redirectTo: location.href.split('#')[0].split('?')[0] } });
   }
 
-  return { client, load, sync, signUp, signIn, signInWith };
+  return { client, load, sync, loadExerciseVideos, signUp, signIn, signInWith };
 })();
-

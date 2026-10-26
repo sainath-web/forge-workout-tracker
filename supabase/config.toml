@@ -1,0 +1,30 @@
+project_id = "forge-workout-tracker"
+
+[api]
+enabled = true
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+major_version = 17
+
+[auth]
+enabled = true
+site_url = "https://sainath-web.github.io/forge-workout-tracker"
+additional_redirect_urls = [
+  "http://localhost:5173",
+  "https://sainath-web.github.io/forge-workout-tracker/"
+]
+enable_signup = true
+
+[auth.external.google]
+enabled = false
+client_id = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET)"
+
+[auth.external.apple]
+enabled = false
+client_id = "env(SUPABASE_AUTH_EXTERNAL_APPLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_EXTERNAL_APPLE_SECRET)"
+
